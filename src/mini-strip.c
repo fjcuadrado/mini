@@ -2,7 +2,7 @@
  * mini-strip.c
  * This file is part of mini, a library to parse INI files.
  *
- * Copyright (c) 2010, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
+ * Copyright (c) 2010-2017, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,31 +37,31 @@
 
 
 /**
- *  Strips left whitespaces.
+ * Strip left blank spaces.
  *
- *  @param string String to be stripped.
- *  @return The return value is the stripped string.
+ * @param string String to strip from left.
+ * @return String without left blank spaces.
  */
 char *
-mini_lstrip (char *string)
+mini_lstrip(char *string)
 {
     char *p;
 
     /* String can't be NULL */
-    assert (string != NULL);
+    assert(string != NULL);
 
-    /* Search the first non whitespace character from left to right */
-    for (p = string; (p != NULL) && isspace (*p); p++)
+    /* Search the first non blank space character from left to right */
+    for (p = string; (p != NULL) && isspace(*p); p++)
         ;
 
     return p;
 }
 
 /**
- *  Strips right whitespaces.
+ * Strip right blank spaces.
  *
- *  @param string String to be stripped.
- *  @return The return value is the stripped string.
+ * @param string String to strip from right.
+ * @return String without right blank spaces.
  */
 char *
 mini_rstrip (char *string)
@@ -71,26 +71,26 @@ mini_rstrip (char *string)
     size_t len;
 
     /* String can't be NULL */
-    assert (string != NULL);
+    assert(string != NULL);
 
     p = string;
-    len = strlen (string);
+    len = strlen(string);
 
-    /* Search the first non whitespace character from right to left */
-    for (pos = len - 1; (pos >= 0) && isspace (p[pos]); pos--)
+    /* Search the first non blank space character from right to left */
+    for (pos = len - 1; (pos >= 0) && isspace(p[pos]); pos--)
         ;
 
-    if ((pos >= 0) && !isspace (p[pos]))
+    if ((pos >= 0) && !isspace(p[pos]))
         p[pos + 1] = '\0';
 
     return string;
 }
 
 /**
- *  Strips left and right whitespaces.
+ * Strip left and right blank spaces.
  *
- *  @param string String to be stripped.
- *  @return The return value is the stripped string.
+ * @param string String to strip.
+ * @return String without left and right blank spaces.
  */
 char *
 mini_strip (char *string)
@@ -98,10 +98,10 @@ mini_strip (char *string)
     char *ret;
 
     /* String can't be NULL */
-    assert (string != NULL);
+    assert(string != NULL);
 
-    ret = mini_lstrip (string);
-    ret = mini_rstrip (ret);
+    ret = mini_lstrip(string);
+    ret = mini_rstrip(ret);
 
     return ret;
 }

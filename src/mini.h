@@ -2,7 +2,7 @@
  * mini.h
  * This file is part of mini, a library to parse INI files.
  *
- * Copyright (c) 2010, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
+ * Copyright (c) 2010-2017, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,20 +34,20 @@
 #include "mini-file.h"
 
 
-MiniFile *mini_parse_file (const char *file_name);
+MiniFile *mini_parse_file(const char *file_name);
 
-void mini_free (MiniFile *mini_file);
+void mini_free(MiniFile *mini_file);
 
-unsigned int mini_get_number_of_sections (MiniFile *mini_file);
+unsigned int mini_get_number_of_sections(MiniFile *mini_file);
 
-unsigned int mini_get_number_of_keys (MiniFile *mini_file, const char *section);
+unsigned int mini_get_number_of_keys(MiniFile *mini_file, const char *section);
 
-char *mini_get_section (MiniFile *mini_file, unsigned int section_pos);
+char *mini_get_section(MiniFile *mini_file, unsigned int section_pos);
 
-char *mini_get_key (MiniFile *mini_file, const char *section,
-                    unsigned int key_pos);
+char *mini_get_key(MiniFile *mini_file, const char *section,
+                   unsigned int key_pos);
 
-char *mini_get_value (MiniFile *mini_file, const char *section,
-                      const char *key);
+char *mini_get_value(MiniFile *mini_file, const char *section,
+                     const char *key);
 
 #endif /* __MINI_H__ */

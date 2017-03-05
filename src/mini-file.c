@@ -36,42 +36,40 @@
 
 
 /**
- *  Creates a new SectionData structure containing the given key and
- *  the given value.
+ * Create a new SectionData structure with the given key and the given value.
  *
- *  @param key A key name.
- *  @param value A value.
- *  @return The return value is the new SectionData structure.
- *          The function returns NULL, if the SectionData structure
- *          can't be created.
+ * @param key Key name to create.
+ * @param value Key's value to create.
+ * @return On success, a new SectionData structure is returned.
+ *         On failure, NULL is returned.
  */
 static SectionData *
-mini_file_section_data_new (const char *key, const char *value)
+mini_file_section_data_new(const char *key, const char *value)
 {
     SectionData *data;
 
     /* Key and value can't be NULL */
-    assert (key != NULL);
-    assert (value != NULL);
+    assert(key != NULL);
+    assert(value != NULL);
 
-    data = (SectionData *) malloc (sizeof (SectionData));
+    data = (SectionData *) malloc(sizeof (SectionData));
     if (data == NULL)
         return NULL;
 
-    data->key = strdup (key);
-    data->value = strdup (value);
+    data->key = strdup(key);
+    data->value = strdup(value);
     data->next = NULL;
 
     return data;
 }
 
 /**
- *  Frees an allocated SectionData structure.
+ * Free an allocated SectionData structure.
  *
- *  @param data An allocated SectionData structure.
+ * @param data A SectionData structure.
  */
 static void
-mini_file_section_data_free (SectionData *data)
+mini_file_section_data_free(SectionData *data)
 {
     SectionData *p;
 
@@ -84,33 +82,32 @@ mini_file_section_data_free (SectionData *data)
         data = p->next;
         p->next = NULL;
 
-        free (p->key);
-        free (p->value);
-        free (p);
+        free(p->key);
+        free(p->value);
+        free(p);
     }
 }
 
 /**
- *  Creates a new Section structure containing the given section.
+ * Create a new Section structure containing the given section.
  *
- *  @param section A section name.
- *  @return The return value is the new Section structure.
- *          The function returns NULL, if the Section structure
- *          can't be created.
+ * @param section Section name to create.
+ * @return On success, a new Section structure is returned.
+ *         On failure, NULL is returned.
  */
 static Section *
-mini_file_section_new (const char *section_name)
+mini_file_section_new(const char *section_name)
 {
     Section *section;
 
     /* Section name can't be NULL */
-    assert (section_name != NULL);
+    assert(section_name != NULL);
 
-    section = (Section *) malloc (sizeof (Section));
+    section = (Section *) malloc(sizeof (Section));
     if (section == NULL)
         return NULL;
 
-    section->name = strdup (section_name);
+    section->name = strdup(section_name);
     section->data = NULL;
     section->next = NULL;
 
@@ -118,12 +115,12 @@ mini_file_section_new (const char *section_name)
 }
 
 /**
- *  Frees an allocated Section structure.
+ * Free an allocated Section structure.
  *
- *  @param data An allocated Section structure.
+ * @param section A Section structure.
  */
 static void
-mini_file_section_free (Section *section)
+mini_file_section_free(Section *section)
 {
     Section *p;
 
@@ -136,7 +133,7 @@ mini_file_section_free (Section *section)
         section = p->next;
         p->next = NULL;
 
-        mini_file_section_data_free (p->data);
+        mini_file_section_data_free(p->data);
         p->data = NULL;
         free (p->name);
         free (p);
@@ -144,24 +141,25 @@ mini_file_section_free (Section *section)
 }
 
 /**
- *  Searches for a section in a given MiniFile.
+ * Search a section in a given MiniFile.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param section A section name.
- *  @return The function returns NULL, if the given section can't be found.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param section Section name to search.
+ * @return On success, a Section structure is returned.
+ *         On failure, NULL is returned.
  */
 static Section *
-mini_file_find_section (const MiniFile *mini_file, const char *section)
+mini_file_find_section(const MiniFile *mini_file, const char *section)
 {
     Section *sec = NULL;
 
     /* MiniFile and section can't be NULL */
-    assert (mini_file != NULL);
-    assert (section != NULL);
+    assert(mini_file != NULL);
+    assert(section != NULL);
 
     /* Search the given section into the given mini file */
     for (sec = mini_file->section; sec != NULL; sec = sec->next) {
-        if (strcmp (sec->name, section) == 0)
+        if (strcmp(sec->name, section) == 0)
             break;
     }
 
@@ -169,24 +167,25 @@ mini_file_find_section (const MiniFile *mini_file, const char *section)
 }
 
 /**
- *  Searches for a key in a given section of a MiniFile.
+ * Search a key in a given section of a MiniFile.
  *
- *  @param data Section data in which the given key will be searched.
- *  @param key A key name.
- *  @return The function returns NULL, if the given key can't be found.
+ * @param data Section data where the given key will be searched.
+ * @param key Key name to search.
+ * @return On success, a SectionData structure is returned.
+ *         On failure, NULL is returned.
  */
 static SectionData *
-mini_file_find_key (const Section *section, const char *key)
+mini_file_find_key(const Section *section, const char *key)
 {
     SectionData *data = NULL;
 
     /* Data and key can't be NULL */
-    assert (section != NULL);
-    assert (key != NULL);
+    assert(section != NULL);
+    assert(key != NULL);
 
     /* Search the given key into the data of the given section */
     for (data = section->data; data != NULL; data = data->next) {
-        if (strcmp (data->key, key) == 0)
+        if (strcmp(data->key, key) == 0)
             break;
     }
 
@@ -195,15 +194,14 @@ mini_file_find_key (const Section *section, const char *key)
 
 
 /**
- *  Creates a new MiniFile structure, this structure stores the parsed INI file.
+ * Create a new MiniFile structure, this structure stores the parsed INI file.
  *
- *  @param file_name INI file name.
- *  @return The return value is the new MiniFile structure.
- *          The function returns NULL, if the MiniFile structure
- *          can't be created.
+ * @param file_name INI file name.
+ * @return On success, a new MiniFile structure is returned.
+ *         On failure, NULL is returned.
  */
 MiniFile *
-mini_file_new (const char *file_name)
+mini_file_new(const char *file_name)
 {
     MiniFile *mini_file;
 
@@ -211,60 +209,60 @@ mini_file_new (const char *file_name)
     if (file_name == NULL)
         return NULL;
 
-    mini_file = (MiniFile *) malloc (sizeof (MiniFile));
+    mini_file = (MiniFile *) malloc(sizeof (MiniFile));
     if (mini_file == NULL)
         return NULL;
 
-    mini_file->file_name = strdup (file_name);
+    mini_file->file_name = strdup(file_name);
     mini_file->section = NULL;
 
     return mini_file;
 }
 
 /**
- *  Frees an allocated MiniFile structure.
+ * Free an allocated MiniFile structure.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
+ * @param mini_file A MiniFile structure generated from an INI file.
  */
 void
-mini_file_free (MiniFile *mini_file)
+mini_file_free(MiniFile *mini_file)
 {
     /* Do nothing with NULL pointers */
     if (mini_file == NULL)
         return;
 
-    mini_file_section_free (mini_file->section);
+    mini_file_section_free(mini_file->section);
     mini_file->section = NULL;
 
-    free (mini_file->file_name);
+    free(mini_file->file_name);
     mini_file->file_name = NULL;
 
-    free (mini_file);
+    free(mini_file);
 }
 
 /**
- *  Inserts a section in a MiniFile structure.
+ * Insert a section in a MiniFile structure.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param section_name A section name.
- *  @return The return value is the MiniFile structure.
- *          The function returns NULL, if the section can't be inserted.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param section_name Section name to insert.
+ * @return On success, MiniFile structure pointer is returned.
+ *         On failure, NULL is returned.
  */
 MiniFile *
-mini_file_insert_section (MiniFile *mini_file, const char *section_name)
+mini_file_insert_section(MiniFile *mini_file, const char *section_name)
 {
     Section *section;
 
     /* MiniFile can't be NULL */
-    assert (mini_file != NULL);
+    assert(mini_file != NULL);
 
     /* If the section already exists, it must not be inserted. Although it must
      * be marked as the current section for future insertions */
-    section = mini_file_find_section (mini_file, section_name);
+    section = mini_file_find_section(mini_file, section_name);
     if (section == NULL) {
 
         /* A new section must be created and inserted */
-        section = mini_file_section_new (section_name);
+        section = mini_file_section_new(section_name);
         if (section == NULL)
             return NULL;
 
@@ -280,34 +278,34 @@ mini_file_insert_section (MiniFile *mini_file, const char *section_name)
 }
 
 /**
- *  Inserts a key-value pair in the last readed section from an INI file.
+ * Insert a key-value pair in the last readed section from an INI file.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param key A key name.
- *  @param value The value of the key.
- *  @return The return value is the MiniFile structure.
- *          The function returns NULL, if the key-value pair can't be inserted.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param key Key name to insert.
+ * @param value Key's value to insert.
+ * @return On success, MiniFile structure pointer is returned.
+ *         On failure, NULL is returned.
  */
 MiniFile *
-mini_file_insert_key_and_value (MiniFile *mini_file, const char *key,
-                                const char *value)
+mini_file_insert_key_and_value(MiniFile *mini_file, const char *key,
+                               const char *value)
 {
     SectionData *data;
 
     /* MiniFile can't be NULL */
-    assert (mini_file != NULL);
+    assert(mini_file != NULL);
 
     /* There isn't a section or current section */
     if (mini_file->section == NULL || mini_file->__current_section == NULL)
         return NULL;
 
     /* If the key already exists, it must not be inserted */
-    data = mini_file_find_key (mini_file->__current_section, key);
+    data = mini_file_find_key(mini_file->__current_section, key);
     if (data != NULL)
         return mini_file;
 
     /* A new key-value pair must be created and inserted */
-    data = mini_file_section_data_new (key, value);
+    data = mini_file_section_data_new(key, value);
     if (data == NULL)
         return NULL;
 
@@ -318,19 +316,19 @@ mini_file_insert_key_and_value (MiniFile *mini_file, const char *key,
 }
 
 /**
- *  Gets the number of sections in an INI file.
+ * Get the number of sections in an INI file.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @return The return value is the number of sections in the given INI file.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @return The number of sections in the given INI file.
  */
 unsigned int
-mini_file_get_number_of_sections (MiniFile *mini_file)
+mini_file_get_number_of_sections(MiniFile *mini_file)
 {
     unsigned int num_sections = 0;
     Section *sec;
 
     /* MiniFile can't be NULL */
-    assert (mini_file != NULL);
+    assert(mini_file != NULL);
 
     /* Count sections of the MiniFile */
     for (sec = mini_file->section; sec != NULL; sec = sec->next)
@@ -340,24 +338,24 @@ mini_file_get_number_of_sections (MiniFile *mini_file)
 }
 
 /**
- *  Gets the number of keys in a given section.
+ * Get the number of keys in a given section.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param section A section name.
- *  @return The return value is the number of keys in the given section.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param section Section name to count its keys.
+ * @return The number of keys in the given section is returned.
  */
 unsigned int
-mini_file_get_number_of_keys (MiniFile *mini_file, const char *section)
+mini_file_get_number_of_keys(MiniFile *mini_file, const char *section)
 {
     unsigned int num_keys = 0;
     Section *sec;
     SectionData *data;
 
     /* MiniFile can't be NULL */
-    assert (mini_file != NULL);
+    assert(mini_file != NULL);
 
     /* Search the given section */
-    sec = mini_file_find_section (mini_file, section);
+    sec = mini_file_find_section(mini_file, section);
     if (sec == NULL)
         return 0;
 
@@ -369,24 +367,22 @@ mini_file_get_number_of_keys (MiniFile *mini_file, const char *section)
 }
 
 /**
- *  Gets the name of the section which is in the given position.
+ * Get the name of the section which is in the given position.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param section_pos Key's position.
- *  @return The return value is the name of the section which is in the given
- *          position.
- *          The function returns NULL, if there isn't a section in the given
- *          position.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param section_pos Section's position.
+ * @return On success, section name is returned.
+ *         On failure, NULL is returned.
  */
 char *
-mini_file_get_section (MiniFile *mini_file, unsigned int section_pos)
+mini_file_get_section(MiniFile *mini_file, unsigned int section_pos)
 {
     char *section_name = NULL;
     int i;
     Section *sec;
 
     /* MiniFile can't be NULL */
-    assert (mini_file != NULL);
+    assert(mini_file != NULL);
 
     /* Search the given section's position */
     sec = mini_file->section;
@@ -401,20 +397,18 @@ mini_file_get_section (MiniFile *mini_file, unsigned int section_pos)
 }
 
 /**
- *  Gets the name of the key which is in the given section and in the given
- *  position.
+ * Get the name of a key which is in the given section and in the given
+ * position.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param section Section from where the key is gotten.
- *  @param key_pos Key's position.
- *  @return The return value is the name of the key which is in the given
- *          section and in the given position.
- *          The function returns NULL, if there isn't a key in the given section
- *          and in the given position.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param section Section name from where retrieve the key name.
+ * @param key_pos Key's position.
+ * @return On success, key name is returned.
+ *         On failure, NULL is returned.
  */
 char *
-mini_file_get_key (MiniFile *mini_file, const char *section,
-                   unsigned int key_pos)
+mini_file_get_key(MiniFile *mini_file, const char *section,
+                  unsigned int key_pos)
 {
     char *key_name = NULL;
     int i;
@@ -422,10 +416,10 @@ mini_file_get_key (MiniFile *mini_file, const char *section,
     SectionData *data;
 
     /* MiniFile and section can't be NULL */
-    assert (mini_file != NULL);
-    assert (section != NULL);
+    assert(mini_file != NULL);
+    assert(section != NULL);
 
-    sec = mini_file_find_section (mini_file, section);
+    sec = mini_file_find_section(mini_file, section);
     if (sec == NULL)
         return NULL;
 
@@ -442,31 +436,30 @@ mini_file_get_key (MiniFile *mini_file, const char *section,
 }
 
 /**
- *  Gets a value from a section's key.
+ * Get a value from a section's key.
  *
- *  @param mini_file A MiniFile structure generated from an INI file.
- *  @param section A section name.
- *  @param key A key name.
- *  @return The return value is the value from the given section's key.
- *          The function returns NULL, if the given section or the given
- *          key doesn't exist.
+ * @param mini_file A MiniFile structure generated from an INI file.
+ * @param section Section name to retrieve key's value
+ * @param key Key name to retrieve its value.
+ * @return On success, the value from the given section's key is returned.
+ *         On failure, NULL is returned.
  */
 char *
-mini_file_get_value (MiniFile *mini_file, const char *section, const char *key)
+mini_file_get_value(MiniFile *mini_file, const char *section, const char *key)
 {
     Section *sec;
     SectionData *data;
 
     /* MiniFile can't be NULL */
-    assert (mini_file != NULL);
+    assert(mini_file != NULL);
 
     /* Search the given section */
-    sec = mini_file_find_section (mini_file, section);
+    sec = mini_file_find_section(mini_file, section);
     if (sec == NULL)
         return NULL;
 
     /* Search the given key */
-    data = mini_file_find_key (sec, key);
+    data = mini_file_find_key(sec, key);
     if (data == NULL)
         return NULL;
 

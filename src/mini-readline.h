@@ -2,7 +2,7 @@
  * mini-readline.h
  * This file is part of mini, a library to parse INI files.
  *
- * Copyright (c) 2010, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
+ * Copyright (c) 2010-2017, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,9 +34,9 @@
 #include <stdio.h>
 
 #define EOL '\n'
-#define LINE_LEN 10
+#define LINE_LEN 128
 
 
-char *mini_readline (FILE *file);
+char *mini_readline(FILE *file);
 
 #endif /* __MINI_READLINE_H__ */

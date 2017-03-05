@@ -2,7 +2,7 @@
  * mini-strip.h
  * This file is part of mini, a library to parse INI files.
  *
- * Copyright (c) 2010, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
+ * Copyright (c) 2010-2017, Francisco Javier Cuadrado <fcocuadrado@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,10 +31,10 @@
 #ifndef __MINI_STRIP_H__
 #define __MINI_STRIP_H__
 
-char *mini_lstrip (char *string);
+char *mini_lstrip(char *string);
 
-char *mini_rstrip (char *string);
+char *mini_rstrip(char *string);
 
-char *mini_strip (char *string);
+char *mini_strip(char *string);
 
 #endif /* __MINI_STRIP_H__ */

@@ -53,26 +53,26 @@ struct _MiniFile {
 };
 
 
-MiniFile *mini_file_new (const char *file_name);
+MiniFile *mini_file_new(const char *file_name);
 
-void mini_file_free (MiniFile *mini_file);
+void mini_file_free(MiniFile *mini_file);
 
-MiniFile *mini_file_insert_section (MiniFile *mini_file, const char *section);
+MiniFile *mini_file_insert_section(MiniFile *mini_file, const char *section);
 
-MiniFile *mini_file_insert_key_and_value (MiniFile *mini_file, const char *key,
-                                          const char *value);
+MiniFile *mini_file_insert_key_and_value(MiniFile *mini_file, const char *key,
+                                         const char *value);
 
-unsigned int mini_file_get_number_of_sections (MiniFile *mini_file);
+unsigned int mini_file_get_number_of_sections(MiniFile *mini_file);
 
-unsigned int mini_file_get_number_of_keys (MiniFile *mini_file,
-                                           const char *section);
+unsigned int mini_file_get_number_of_keys(MiniFile *mini_file,
+                                          const char *section);
 
-char *mini_file_get_section (MiniFile *mini_file, unsigned int section_pos);
+char *mini_file_get_section(MiniFile *mini_file, unsigned int section_pos);
 
-char *mini_file_get_key (MiniFile *mini_file, const char *section,
-                         unsigned int key_pos);
+char *mini_file_get_key(MiniFile *mini_file, const char *section,
+                        unsigned int key_pos);
 
-char *mini_file_get_value (MiniFile *mini_file, const char *section,
-                           const char *key);
+char *mini_file_get_value(MiniFile *mini_file, const char *section,
+                          const char *key);
 
 #endif /* __MINI_FILE_H__ */
